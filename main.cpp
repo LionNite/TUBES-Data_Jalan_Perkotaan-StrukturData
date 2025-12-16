@@ -1,4 +1,4 @@
-#include "jalan-jalan.h"
+#include "header.h"
 
 int main() {
     List_Kota LK;
@@ -42,6 +42,12 @@ int main() {
 
     cout << "\n=== DATA SETELAH UPDATE ===" << endl;
     showAll(LK);
+
+    // Tes Poin H
+    showJalanKota(LK, "Surabaya");
+
+    // Tes Poin I: Panggil dengan nama baru
+    showData_byTipe(LK, "Protokol");
 
     return 0;
 }

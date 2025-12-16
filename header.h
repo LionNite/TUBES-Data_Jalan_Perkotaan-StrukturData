@@ -74,5 +74,6 @@ void deleteJalan(List_Jalan &L_Jalan, List_Kota &L_Kota, string namaJalan);
 void showAll(List_Kota L_Kota);
 void showJalanKota(List_Kota L_Kota, string namaKota);
 void showKotaPunyaJalan(List_Kota L_Kota, string namaJalan);
+void showData_byTipe(List_Kota L_Kota, string tipeJalan);
 
 #endif // JALAN_JALAN_H
