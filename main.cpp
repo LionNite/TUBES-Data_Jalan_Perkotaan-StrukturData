@@ -1,53 +1,122 @@
 #include "header.h"
 
 int main() {
-    List_Kota LK;
-    List_Jalan LJ;
+    List_Kota L_Kota;
+    List_Jalan L_Jalan;
 
-    createListKota(LK);
-    createListJalan(LJ);
+    createListKota(L_Kota);
+    createListJalan(L_Jalan);
 
-    // 1. Input Data Master Jalan
-    insertJalan(LJ, createElmJalan("Jl. Sudirman", "Protokol", 12));
-    insertJalan(LJ, createElmJalan("Jl. A. Yani", "Arteri", 10));
-    insertJalan(LJ, createElmJalan("Jl. Diponegoro", "Satu Arah", 8));
-    insertJalan(LJ, createElmJalan("Jl. Tol Waru", "Tol", 20));
+    int pilihan;
+    string namaKota, walikota, namaJalan, tipeJalan;
+    int populasi, jarak;
 
-    // 2. Input Data Kota
-    insertKota(LK, createElmKota("Surabaya", "Eri Cahyadi", 3000000));
-    insertKota(LK, createElmKota("Jakarta", "Heru Budi", 10000000));
-    insertKota(LK, createElmKota("Malang", "Sutiaji", 900000));
+//Menu Utama
+do{ 
+    cout << "========== Menu Sistem Kota & Jalan ==========" << endl;
+    cout << "1. Tambah Kota" << endl;
+    cout << "2. Tambah Jalan" << endl;
+    cout << "3. Hubungkan Kota dan Jalan" << endl;
+    cout << "4. Tampilkan Semua Data" << endl;
+    cout << "5. Tampilkan Jalan di Kota Tertentu" << endl;
+    cout << "6. Tampilkan Kota yang Memiliki Jalan Tertentu" << endl;
+    cout << "7. Tampilkan Data Berdasarkan Tipe Jalan" << endl;
+    cout << "8. Hapus Kota" << endl;
+    cout << "9. Hapus Jalan" << endl;
+    cout << "0. Keluar" << endl;
+    cout << "Pilihan: ";
+    cin >> pilihan;
+    cin.ignore(); //membersihkan buffer new line
 
-    // 3. Hubungkan Kota dengan Jalan (Relasi M-N)
-    hubungkanKotaJalan(LK, LJ, "Surabaya", "Jl. Sudirman");
-    hubungkanKotaJalan(LK, LJ, "Surabaya", "Jl. A. Yani");
-    hubungkanKotaJalan(LK, LJ, "Surabaya", "Jl. Diponegoro");
+    switch (pilihan) {
+//1. Menambahkan data kota baru
+    case 1:
+        cout << "Nama Kota : ";
+        getline(cin, namaKota);
+        cout << "Nama Walikota : ";
+        getline(cin, walikota);
+        cout << "Populasi : ";
+        cin >> populasi;
 
-    // Nama jalan sama di kota beda
-    hubungkanKotaJalan(LK, LJ, "Jakarta", "Jl. Sudirman");
-    hubungkanKotaJalan(LK, LJ, "Jakarta", "Jl. Diponegoro");
-    hubungkanKotaJalan(LK, LJ, "Malang", "Jl. A. Yani");
+        insertKota(L_Kota, createElmKota(namaKota, walikota, populasi));
+        cout << "Kota Berhasil Ditambahkan.\n" << endl;
+        break;
 
-    // 4. Tampilkan Hasil
-    cout << "=== DATA JALAN PERKOTAAN ===" << endl;
-    showAll(LK);
+//2. Menambahkan data jalan baru
+    case 2:
+        cout << "Nama Jalan : ";
+        getline(cin, namaJalan);
+        cout << "Tipe Jalan : ";
+        getline(cin, tipeJalan);
+        cout << "Jarak (km) : ";
+        cin >> jarak;
 
-    // 5. Contoh Query & Delete
-    cout << "----------------------------" << endl;
-    showKotaPunyaJalan(LK, "Jl. Sudirman");
-    showKotaPunyaJalan(LK, "Jl. A. Yani");
-    
-    cout << "\n[Menghapus 'Jl. Sudirman' dari database...]" << endl;
-    deleteJalan(LJ, LK, "Jl. Sudirman");
+        InsertJalan(L_Jalan, createElmJalan(namaJalan, tipeJalan, jarak));
+        cout << "Jalan Berhasil Ditambahkan.\n" << endl;
+        break;
 
-    cout << "\n=== DATA SETELAH UPDATE ===" << endl;
-    showAll(LK);
+//3. Menghubungkan kota dengan jalan tertentu
+    case 3:
+        cout << "Nama Kota : ";
+        getline(cin, namaKota);
+        cout << "Nama Jalan : ";
+        getline(cin, namaJalan);
 
-    // Tes Poin H
-    showJalanKota(LK, "Surabaya");
+        hubungkanKotaJalan(L_Kota, L_Jalan, namaKota, namaJalan);
+        cout << "Kota dan Jalan Berhasil dihubungkan.\n" << endl;
+        break;
 
-    // Tes Poin I: Panggil dengan nama baru
-    showData_byTipe(LK, "Protokol");
+//4. Menampilkan seluruh data kota beserta jalan
+    case 4:
+        showAll(L_Kota);
+        break;
 
-    return 0;
+//5. Menampilkan jalan yang dimiliki oleh kota tertentu
+    case 5:
+        cout << "Nama Kota: ";
+        getline(cin, namaKota);
+        showJalanKota(L_Kota, namaKota);
+        break;
+
+//6. Menampilkan kota yang memiliki jalan tertentu
+    case 6:
+        cout << "Nama Jalan : ";
+        getline(cin, namaJalan);
+        showKotaPunyaJalan(L_Kota, namaJalan);
+        break;
+
+//7. Menampilkan data berdasarkan tipe jalan
+    case 7:
+        cout << "Tipe Jalan : ";
+        getline(cin, tipeJalan);
+        showData_byTipe(L_Kota, tipeJalan);
+        break;
+
+//8. Menghapus data kota beserta seluruh relasinya
+    case 8:
+        cout << "Nama Kota yang ingin dihapus : ";
+        getline(cin, namaKota);
+        deleteKota(L_Kota, namaKota);
+        cout << "Kota Berhasil dihapus.\n" << endl;
+        break;
+
+//9. Menghapus data jalan dan relasinya di semua kota
+    case 9:
+        cout << "Nama Jalan yang ingin dihapus : ";
+        getline(cin, namaJalan);
+        deleteJalan(L_Jalan, L_Kota, namaJalan);
+        cout << "Jalan Berhasil dihapus.\n" << endl;
+        break;
+
+//0. Keluar dari program
+    case 0:
+        cout << "Keluar dari program." << endl;
+        break;
+
+    //Jika inputan tidak sesuai
+    default:
+        cout << "Pilihan tidak valid!" << endl;
+    }
+} while (pilihan != 0);
+    return 0;    //Program selesai
 }
