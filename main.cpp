@@ -51,7 +51,7 @@ do{
         cout << "Jarak (km) : ";
         cin >> jarak;
 
-        InsertJalan(L_Jalan, createElmJalan(namaJalan, tipeJalan, jarak));
+        insertJalan(L_Jalan, createElmJalan(namaJalan, tipeJalan, jarak));
         cout << "Jalan Berhasil Ditambahkan.\n" << endl;
         break;
 
