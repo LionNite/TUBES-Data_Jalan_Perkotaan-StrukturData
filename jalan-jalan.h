@@ -6,38 +6,73 @@
 
 using namespace std;
 
-struct elm_Lokasi;
 struct elm_Jalan;
+struct elm_Kota;
+struct elm_Relasi;
 
 typedef elm_Jalan* addr_Jalan;
-typedef elm_Lokasi* addr_Lokasi;
+typedef elm_Kota* addr_Kota;
+typedef elm_Relasi* addr_Relasi;
 
 struct elm_Jalan{
     string namaJalan;
+    string tipeJalan;
     int jarak;
-    addr_Lokasi tujuan;
-    addr_Jalan nextJalan;                              
+    addr_Jalan next;
 };
 
-struct elm_Lokasi{
-    string namaLokasi;
-    addr_Lokasi nextLokasi;
-    addr_Jalan firstJalan;
+struct List_Jalan{
+    addr_Jalan first;
 };
 
-struct List_Lokasi{
-    addr_Lokasi firstLokasi;
+struct elm_Relasi{
+    addr_Relasi next;
+    addr_Jalan linkJalan;
 };
 
-void createListLokasi(List_Lokasi &L);
+struct elm_Kota{
+    string namaKota;
+    string walikota;
+    int populasi;
 
-addr_Lokasi createElmLokasi(string namaLokasi);
-addr_Jalan createElmJalan(string namaJalan, int jarak, addr_Lokasi tujuan);
+    addr_Relasi firstRelasi;
 
-void insertLokasi(List_Lokasi &L, addr_Lokasi p);
-void insertJalan(List_Lokasi &L, string namaAsal, string namaTujuan, string namaJalan, int jarak);
-addr_Lokasi findLokasi(List_Lokasi L, string namaLokasi);
+    addr_Kota next;
+    addr_Kota prev;
+};
 
-void printPeta(List_Lokasi L);
+struct List_Kota{
+    addr_Kota first;
+    addr_Kota last;
+};
 
-#endif // TRANSPORT_H
+//CREATE LIST
+void createListKota(List_Kota &L);
+void createListJalan(List_Jalan &L);
+
+//CREATE ELEMENT
+addr_Jalan createElmJalan(string namaJalan, string tipeJalan, int jarak);
+addr_Kota createElmKota(string namaKota, string walikota, int populasi);
+addr_Relasi createElmRelasi(addr_Jalan P_Jalan);
+
+//INSERT
+void insertJalan(List_Jalan &L, addr_Jalan P);
+void insertKota(List_Kota &L, addr_Kota P);
+
+//FIND
+addr_Jalan findJalan(List_Jalan &L, string namaJalan);
+addr_Kota findKota(List_Kota &L, string namaKota);
+
+//CONNECT
+void hubungkanKotaJalan(List_Kota &L_Kota, List_Jalan &L_Jalan, string namaKota, string namaJalan);
+
+///DELETE
+void deleteKota(List_Kota &L, string namaKota);
+void deleteJalan(List_Jalan &L_Jalan, List_Kota &L_Kota, string namaJalan);
+
+//SHOW 
+void showAll(List_Kota L_Kota);
+void showJalanKota(List_Kota L_Kota, string namaKota);
+void showKotaPunyaJalan(List_Kota L_Kota, string namaJalan);
+
+#endif // JALAN_JALAN_H

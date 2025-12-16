@@ -1,48 +1,47 @@
-#include <iostream>
 #include "jalan-jalan.h"
 
-using namespace std;
-
 int main() {
-    List_Lokasi Surabaya;
-    createListLokasi(Surabaya);
+    List_Kota LK;
+    List_Jalan LJ;
 
-    cout << "=== SISTEM PEMETAAN JALAN KOTA SURABAYA ===" << endl;
-    cout << "1. Membangun Titik Lokasi..." << endl;
+    createListKota(LK);
+    createListJalan(LJ);
 
-    // Tambah Lokasi (Vertex)
-    insertLokasi(Surabaya, createElmLokasi("Bundaran Waru"));
-    insertLokasi(Surabaya, createElmLokasi("Royal Plaza"));
-    insertLokasi(Surabaya, createElmLokasi("KBS"));
-    insertLokasi(Surabaya, createElmLokasi("Taman Bungkul"));
-    insertLokasi(Surabaya, createElmLokasi("Tunjungan Plaza"));
+    // 1. Input Data Master Jalan
+    insertJalan(LJ, createElmJalan("Jl. Sudirman", "Protokol", 12));
+    insertJalan(LJ, createElmJalan("Jl. A. Yani", "Arteri", 10));
+    insertJalan(LJ, createElmJalan("Jl. Diponegoro", "Satu Arah", 8));
+    insertJalan(LJ, createElmJalan("Jl. Tol Waru", "Tol", 20));
 
-    cout << "2. Membangun Rute Jalan..." << endl;
+    // 2. Input Data Kota
+    insertKota(LK, createElmKota("Surabaya", "Eri Cahyadi", 3000000));
+    insertKota(LK, createElmKota("Jakarta", "Heru Budi", 10000000));
+    insertKota(LK, createElmKota("Malang", "Sutiaji", 900000));
 
-    // Tambah Jalan (Edge) - Menggunakan insertJalan
-    insertJalan(Surabaya, "Bundaran Waru", "Royal Plaza", "Jl. A. Yani", 5);
-    insertJalan(Surabaya, "Royal Plaza", "KBS", "Jl. Wonokromo", 2);
+    // 3. Hubungkan Kota dengan Jalan (Relasi M-N)
+    hubungkanKotaJalan(LK, LJ, "Surabaya", "Jl. Sudirman");
+    hubungkanKotaJalan(LK, LJ, "Surabaya", "Jl. A. Yani");
+    hubungkanKotaJalan(LK, LJ, "Surabaya", "Jl. Diponegoro");
+
+    // Nama jalan sama di kota beda
+    hubungkanKotaJalan(LK, LJ, "Jakarta", "Jl. Sudirman");
+    hubungkanKotaJalan(LK, LJ, "Jakarta", "Jl. Diponegoro");
+    hubungkanKotaJalan(LK, LJ, "Malang", "Jl. A. Yani");
+
+    // 4. Tampilkan Hasil
+    cout << "=== DATA JALAN PERKOTAAN ===" << endl;
+    showAll(LK);
+
+    // 5. Contoh Query & Delete
+    cout << "----------------------------" << endl;
+    showKotaPunyaJalan(LK, "Jl. Sudirman");
+    showKotaPunyaJalan(LK, "Jl. A. Yani");
     
-    // Percabangan di KBS
-    insertJalan(Surabaya, "KBS", "Taman Bungkul", "Jl. Raya Darmo", 1);
-    insertJalan(Surabaya, "KBS", "Royal Plaza", "Jl. Wonokromo (Arah Balik)", 2);
-    
-    // Lanjut ke pusat kota
-    insertJalan(Surabaya, "Taman Bungkul", "Tunjungan Plaza", "Jl. Basuki Rahmat", 3);
+    cout << "\n[Menghapus 'Jl. Sudirman' dari database...]" << endl;
+    deleteJalan(LJ, LK, "Jl. Sudirman");
 
-    // Tes Validasi Error (Lokasi Typo)
-    cout << "\n--- Tes Validasi Error ---" << endl;
-    insertJalan(Surabaya, "KBS", "Bulan", "Jl. Antariksa", 999);
-
-    // Tes Validasi Duplikasi (Input jalan yang sama 2x)
-    cout << "\n--- Tes Validasi Duplikasi ---" << endl;
-    insertJalan(Surabaya, "Bundaran Waru", "Royal Plaza", "Jl. A. Yani", 5);
-
-    cout << "\n===========================================" << endl;
-    cout << "           VISUALISASI PETA              " << endl;
-    cout << "===========================================\n" << endl;
-    
-    printPeta(Surabaya);
+    cout << "\n=== DATA SETELAH UPDATE ===" << endl;
+    showAll(LK);
 
     return 0;
 }
